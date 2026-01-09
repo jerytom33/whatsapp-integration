@@ -1,0 +1,14 @@
+{
+    "name": "whatsapp-fullstack",
+    "version": "1.0.0",
+    "description": "Monorepo for WhatsApp Integration (Backend) and Frontend",
+    "scripts": {
+        "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+        "start:backend": "cd backend && npm run dev",
+        "start:frontend": "cd frontend && npm run dev",
+        "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install"
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.2"
+    }
+}
