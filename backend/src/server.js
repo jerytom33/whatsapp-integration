@@ -17,12 +17,22 @@ db.initDb();
 // Middleware
 app.use(cors());
 app.use(morgan('dev'));
-app.use(bodyParser.json());
+const shopifyRoutes = require('./routes/shopifyRoutes');
+
+// Middleware to capture raw body for Shopify verification
+app.use(bodyParser.json({
+    verify: (req, res, buf) => {
+        req.rawBody = buf;
+    }
+}));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes
 app.use('/api/whatsapp', whatsappRoutes);
 app.use('/webhooks', webhookRoutes);
+app.use('/api/shopify', shopifyRoutes);
+const settingsRoutes = require('./routes/settingsRoutes');
+app.use('/api/settings', settingsRoutes);
 
 // Health check
 app.get('/health', (req, res) => {

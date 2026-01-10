@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, MessageSquare, Settings, FileText, Activity } from 'lucide-react';
+import { LayoutDashboard, MessageSquare, Settings, FileText, Activity, ShoppingBag } from 'lucide-react';
 import './Sidebar.css';
 
 const Sidebar = () => {
@@ -92,6 +92,26 @@ const Sidebar = () => {
                         >
                             <Activity size={20} />
                             <span>Logs</span>
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/shopify" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+                            style={({ isActive }) => ({
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.75rem',
+                                padding: '0.875rem 1rem',
+                                borderRadius: 'var(--radius-md)',
+                                textDecoration: 'none',
+                                color: isActive ? 'var(--color-primary)' : 'var(--color-text-muted)',
+                                background: isActive ? 'var(--color-bg-hover)' : 'transparent',
+                                fontWeight: isActive ? '700' : '500',
+                                marginBottom: '0.25rem',
+                                transition: 'all 0.2s ease'
+                            })}
+                        >
+                            <ShoppingBag size={20} />
+                            <span>Shopify</span>
                         </NavLink>
                     </li>
                     <li>

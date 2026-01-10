@@ -33,6 +33,7 @@ const Settings = () => {
             </div>
 
             <div className="card">
+                <h3>AOC Portal Settings</h3>
                 <div className="form-group">
                     <label className="form-label">AOC Portal API Key</label>
                     <input
@@ -45,7 +46,7 @@ const Settings = () => {
                 </div>
 
                 <div className="form-group">
-                    <label className="form-label">WABA ID (WhatsApp Business Account ID)</label>
+                    <label className="form-label">WABA ID</label>
                     <input
                         type="text"
                         className="form-input"
@@ -55,7 +56,7 @@ const Settings = () => {
                     />
                 </div>
 
-                <button className="btn btn-primary" onClick={handleSave}>
+                <button className="btn btn-primary" onClick={handleSave} style={{ marginTop: '20px' }}>
                     <Save size={18} />
                     Save Settings
                 </button>
