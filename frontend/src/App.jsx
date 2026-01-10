@@ -7,6 +7,7 @@ import Template from './pages/Templates';
 import Messaging from './pages/Messaging';
 import WebhookLogs from './pages/WebhookLogs';
 import Inbox from './pages/Inbox';
+import Workflows from './pages/Workflows';
 import './styles/global.css';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="templates" element={<Template />} />
           <Route path="messaging" element={<Messaging />} />
           <Route path="webhooks" element={<WebhookLogs />} />
+          <Route path="workflows" element={<Workflows />} />
         </Route>
       </Routes>
     </Router>

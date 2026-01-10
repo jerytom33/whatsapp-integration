@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../services/db');
+const axios = require('axios');
 
 // In-memory logs (circular buffer)
 const webhookLogs = [];
@@ -74,6 +75,48 @@ router.post('/whatsapp', async (req, res) => {
                 msgId
             );
             console.log(`Saved INBOUND message from ${phone}`);
+
+            // 3. Trigger Workflows
+            try {
+                // Query workflows directly using the shared database connection pool from services/db
+                // We need to access the pool from the db module. Assuming db module exports pool or we can query via it.
+                // Since db module abstracts queries, we might need a raw query function or access the pool.
+                // Checking db.js exports: it exports pool. So we can use db.pool.
+
+                const workflowsRes = await db.pool.query(`
+                    SELECT id, nodes FROM workflows 
+                    WHERE nodes::text LIKE '%"triggerType": "WhatsApp Webhook"%' OR nodes::text LIKE '%"triggerType":"WhatsApp Webhook"%'
+                `);
+
+                for (const workflow of workflowsRes.rows) {
+                    console.log(`Triggering workflow ${workflow.id}`);
+                    try {
+                        const messageBody = msg.type === 'text' ? msg.text.body : `[${msg.type}]`;
+                        // Internal Secure Call to Workflow Builder
+                        await axios.post(
+                            `http://localhost:3003/api/workflows/${workflow.id}/webhook`,
+                            {
+                                message: messageBody,
+                                from: phone,
+                                name: name,
+                                timestamp: new Date().toISOString(),
+                                raw: msg
+                            },
+                            {
+                                headers: {
+                                    'X-Internal-Secret': process.env.INTERNAL_SECRET,
+                                    'Content-Type': 'application/json'
+                                }
+                            }
+                        );
+                    } catch (wfError) {
+                        console.error(`Failed to trigger workflow ${workflow.id}:`, wfError.message);
+                    }
+                }
+            } catch (err) {
+                console.error('Error triggering workflows:', err);
+            }
+
         } else if (body.object && body.entry) {
             // Keep Meta format as fallback just in case
             for (const entry of body.entry) {
