@@ -44,11 +44,12 @@ router.post('/whatsapp', async (req, res) => {
         // Process webhook logic here
         // Handle AOC Portal Flat Format
         if (body.event === 'message_received' && body.messages) {
-            let phone = body.from;
+            let phone = body.contacts?.recipient || body.from;
             // Ensure phone has '+' prefix for consistency
             if (phone && !phone.startsWith('+')) {
                 phone = '+' + phone;
             }
+            const businessNumber = body.from; // Keep track of business number if needed
 
             const name = body.contacts?.profileName || phone;
             const msg = body.messages;
@@ -100,7 +101,7 @@ router.post('/whatsapp', async (req, res) => {
                                 from: phone,
                                 name: name,
                                 timestamp: new Date().toISOString(),
-                                raw: msg
+                                raw: body
                             },
                             {
                                 headers: {

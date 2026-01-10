@@ -18,7 +18,7 @@ const Workflows = () => {
 
             <div style={{ flex: 1, border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', overflow: 'hidden' }}>
                 <iframe
-                    src="http://localhost:3003"
+                    src="http://localhost:3003/dashboard"
                     style={{ width: '100%', height: '100%', border: 'none' }}
                     title="Workflow Builder"
                 />
