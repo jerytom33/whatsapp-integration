@@ -2,7 +2,6 @@ import type { NextConfig } from "next";
 import { withWorkflow } from "workflow/next";
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ["express", "shopify-api-node", "pg", "morgan", "body-parser", "cors"],
   async headers() {
     return [
       {
