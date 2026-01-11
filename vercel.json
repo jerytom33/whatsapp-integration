@@ -1,4 +1,11 @@
 {
+    "functions": {
+        "pages/api/backend/[[...slug]].ts": {
+            "maxDuration": 30,
+            "memory": 1024,
+            "includeFiles": "backend/**"
+        }
+    },
     "rewrites": [
         {
             "source": "/api/whatsapp/:path*",

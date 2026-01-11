@@ -16,11 +16,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-        config.externals.push("express", "shopify-api-node", "pg", "morgan", "body-parser", "cors");
-    }
-    config.resolve.alias['express/lib/view.js'] = require('path').resolve(__dirname, 'mock-view.js');
+  webpack: (config) => {
     config.watchOptions = {
         poll: 1000,
         aggregateTimeout: 300,
