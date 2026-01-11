@@ -1,0 +1,20 @@
+{
+    "rewrites": [
+        {
+            "source": "/api/whatsapp/:path*",
+            "destination": "/api/backend/api/whatsapp/:path*"
+        },
+        {
+            "source": "/webhooks/:path*",
+            "destination": "/api/backend/webhooks/:path*"
+        },
+        {
+            "source": "/api/shopify/:path*",
+            "destination": "/api/backend/api/shopify/:path*"
+        },
+        {
+            "source": "/api/settings/:path*",
+            "destination": "/api/backend/api/settings/:path*"
+        }
+    ]
+}
