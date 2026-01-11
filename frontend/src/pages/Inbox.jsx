@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Send, User, Search } from 'lucide-react';
 import api from '../services/api';
 import './pages.css';
+import AudioPlayer from '../components/AudioPlayer';
 
 const Inbox = () => {
     const [conversations, setConversations] = useState([]);
@@ -145,11 +146,79 @@ const Inbox = () => {
                                         fontSize: '0.95rem',
                                         lineHeight: '1.5'
                                     }}>
-                                        <div>
-                                            {typeof msg.content === 'string' ? msg.content : (msg.content?.body || JSON.stringify(msg.content))}
-                                        </div>
-                                        <div style={{ fontSize: '0.7rem', color: isOutbound ? 'rgba(255,255,255,0.8)' : '#94A3B8', marginTop: '0.4rem', textAlign: 'right' }}>
-                                            {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                        {msg.type === 'image' && msg.content?.url ? (
+                                            <div>
+                                                <img
+                                                    src={msg.content.url}
+                                                    alt="Shared image"
+                                                    style={{
+                                                        maxWidth: '100%',
+                                                        borderRadius: '8px',
+                                                        marginBottom: msg.content.body ? '0.5rem' : '0',
+                                                        display: 'block'
+                                                    }}
+                                                    onError={(e) => {
+                                                        e.target.style.display = 'none';
+                                                        e.target.nextSibling.style.display = 'block';
+                                                    }}
+                                                />
+                                                <div style={{ display: 'none', fontSize: '0.85rem', opacity: 0.8 }}>
+                                                    📷 Image unavailable
+                                                </div>
+                                                {msg.content.body && <div>{msg.content.body}</div>}
+                                            </div>
+                                        ) : msg.type === 'audio' && msg.content?.url ? (
+                                            <div>
+                                                <AudioPlayer src={msg.content.url} isOutbound={isOutbound} />
+                                                {msg.content.body && <div style={{ marginTop: '0.5rem' }}>{msg.content.body}</div>}
+                                            </div>
+                                        ) : msg.type === 'video' && msg.content?.url ? (
+                                            <div>
+                                                <video
+                                                    controls
+                                                    style={{
+                                                        maxWidth: '100%',
+                                                        borderRadius: '8px',
+                                                        marginBottom: msg.content.body ? '0.5rem' : '0',
+                                                        display: 'block'
+                                                    }}
+                                                >
+                                                    <source src={msg.content.url} type="video/mp4" />
+                                                    Your browser does not support video.
+                                                </video>
+                                                {msg.content.body && <div>{msg.content.body}</div>}
+                                            </div>
+                                        ) : (
+                                            <div>
+                                                {typeof msg.content === 'string' ? msg.content : (msg.content?.body || JSON.stringify(msg.content))}
+                                            </div>
+                                        )}
+                                        <div style={{ fontSize: '0.7rem', color: isOutbound ? 'rgba(255,255,255,0.8)' : '#94A3B8', marginTop: '0.4rem', textAlign: 'right', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.3rem' }}>
+                                            <span>{new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                            {isOutbound && (
+                                                <span style={{ display: 'inline-flex', alignItems: 'center', marginLeft: '0.2rem' }}>
+                                                    {msg.status === 'read' ? (
+                                                        // Double blue ticks for read
+                                                        <svg width="16" height="11" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M11.071 0.5L5.914 5.657L4.243 3.986L3.182 5.046L5.914 7.778L12.132 1.561L11.071 0.5Z" fill="#34B7F1" />
+                                                            <path d="M5.914 5.657L4.243 3.986L3.182 5.046L5.914 7.778L6.975 6.718L5.914 5.657Z" fill="#34B7F1" />
+                                                            <path d="M15.071 0.5L9.914 5.657L9.353 5.096L8.293 6.157L9.914 7.778L16.132 1.561L15.071 0.5Z" fill="#34B7F1" />
+                                                        </svg>
+                                                    ) : msg.status === 'delivered' ? (
+                                                        // Double gray ticks for delivered
+                                                        <svg width="16" height="11" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M11.071 0.5L5.914 5.657L4.243 3.986L3.182 5.046L5.914 7.778L12.132 1.561L11.071 0.5Z" fill="rgba(255,255,255,0.7)" />
+                                                            <path d="M5.914 5.657L4.243 3.986L3.182 5.046L5.914 7.778L6.975 6.718L5.914 5.657Z" fill="rgba(255,255,255,0.7)" />
+                                                            <path d="M15.071 0.5L9.914 5.657L9.353 5.096L8.293 6.157L9.914 7.778L16.132 1.561L15.071 0.5Z" fill="rgba(255,255,255,0.7)" />
+                                                        </svg>
+                                                    ) : (
+                                                        // Single gray tick for sent (or default)
+                                                        <svg width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M11.071 0.5L5.914 5.657L4.243 3.986L3.182 5.046L5.914 7.778L12.132 1.561L11.071 0.5Z" fill="rgba(255,255,255,0.7)" />
+                                                        </svg>
+                                                    )}
+                                                </span>
+                                            )}
                                         </div>
                                     </div>
                                 );
