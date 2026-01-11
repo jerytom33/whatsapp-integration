@@ -24,6 +24,7 @@ export function Sidebar() {
     // Helper to check if link is active.
     // We check if pathname starts with the link path (for sub-routes) or is exact match.
     const isActive = (path: string) => {
+        if (!pathname) return false;
         if (path === "/dashboard" && pathname === "/dashboard") return true;
         if (path !== "/dashboard" && pathname.startsWith(path)) return true;
         return false;
