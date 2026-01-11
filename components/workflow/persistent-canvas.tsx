@@ -7,7 +7,8 @@ export function PersistentCanvas() {
   const pathname = usePathname();
 
   // Show canvas on homepage and workflow pages
-  const showCanvas = pathname === "/" || pathname.startsWith("/workflows/");
+  // Show canvas on homepage and workflow pages
+  const showCanvas = pathname === "/" || (pathname?.startsWith("/workflows/") ?? false);
 
   if (!showCanvas) {
     return null;
