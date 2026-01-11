@@ -31,12 +31,12 @@ export function Sidebar() {
     };
 
     const navItems = [
-        { href: "/inbox", label: "Inbox", icon: MessageSquare },
+        { href: "/dashboard", label: "Inbox", icon: MessageSquare }, // Main Dashboard is Inbox
         { href: "/messaging", label: "Messaging", icon: LayoutDashboard },
         { href: "/templates", label: "Templates", icon: FileText },
         { href: "/webhooks", label: "Logs", icon: Activity },
         { href: "/shopify", label: "Shopify", icon: ShoppingBag },
-        { href: "/dashboard", label: "Workflows", icon: Workflow }, // Mapped to existing /dashboard
+        { href: "/workflows", label: "Workflows", icon: Workflow }, 
         { href: "/settings", label: "Settings", icon: Settings },
     ];
 
