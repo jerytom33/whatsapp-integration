@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-export default function handler(req: VercelRequest, res: VercelResponse) {
+module.exports = function handler(req: VercelRequest, res: VercelResponse) {
     // Dynamically require the Express app to avoid ESM issues
     const app = require('../../backend/src/server');
     
@@ -11,4 +11,4 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
 
     // Pass request to Express app
     app(req, res);
-}
+};
